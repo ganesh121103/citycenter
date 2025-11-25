@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>City Center Store</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="min-h-screen bg-black text-gray-100 font-sans">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-24 right-5 z-50 pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-black shadow-sm border-b border-gray-800">
+      <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+          
+          <!-- Mobile Menu Button -->
+          <button class="md:hidden p-2 text-gray-300 hover:text-white" id="mobile-menu-btn">
+              <i data-lucide="menu"></i>
+          </button>
+
+          <!-- Logo -->
+          <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo({ top: 0, behavior: 'smooth'})">
+              <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <span class="text-white font-bold text-xl">C</span>
+              </div>
+              <span class="text-xl font-extrabold tracking-tight text-white">
+                  CITY<span class="text-blue-600">CENTER</span>
+              </span>
+          </div>
+
+          <!-- Search Bar - Desktop -->
+          <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
+              <input 
+                  type="text" 
+                  id="search-input-desktop"
+                  placeholder="Search products..." 
+                  class="w-full bg-gray-900 text-white border-none rounded-full py-2 pl-4 pr-10 focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder-gray-500"
+              />
+              <i data-lucide="search" class="absolute right-3 top-2.5 text-gray-500 w-5 h-5"></i>
+          </div>
+
+          <!-- Cart Icon -->
+          <button class="relative p-2 hover:bg-gray-900 rounded-full transition-colors" id="cart-btn">
+              <i data-lucide="shopping-cart" class="text-gray-300 w-6 h-6"></i>
+              <span id="cart-badge" class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-black hidden">0</span>
+          </button>
+      </div>
+
+      <!-- Mobile Search Bar (Hidden by default) -->
+      <div id="mobile-menu" class="hidden md:hidden p-4 bg-black border-t border-gray-800">
+         <div class="relative w-full">
+          <input 
+              type="text" 
+              id="search-input-mobile"
+              placeholder="Search..." 
+              class="w-full bg-gray-900 text-white border-none rounded-lg py-2 pl-4 pr-10 placeholder-gray-500"
+          />
+          <i data-lucide="search" class="absolute right-3 top-2.5 text-gray-500 w-5 h-5"></i>
+         </div>
+      </div>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="relative text-white overflow-hidden h-[500px] flex items-center">
+      <!-- Background Image -->
+      <div 
+        class="absolute inset-0 bg-cover bg-center"
+        style="background-image: url('https://images.unsplash.com/photo-1555529733-0e670560f7e1?q=80&w=2000&auto=format&fit=crop');"
+      ></div>
+      <!-- Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
+      
+      <div class="container mx-auto px-4 relative z-10 text-center md:text-left">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
+          Summer Sale <br /> is Live Now
+        </h1>
+        <p class="text-lg md:text-xl mb-8 max-w-lg text-gray-200 drop-shadow-md">
+          Up to 50% off on premium electronics, fashion, and home essentials. Upgrade your lifestyle today.
+        </p>
+        <button 
+          id="hero-shop-btn"
+          class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105 inline-flex items-center"
+        >
+          Shop Now <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+        </button>
+      </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="shop-section" class="container mx-auto px-4 py-12">
+      
+      <!-- Categories -->
+      <div id="category-container" class="flex flex-wrap gap-2 md:gap-4 mb-8 justify-center md:justify-start">
+          <!-- Categories injected by JS -->
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <!-- Products injected by JS -->
+      </div>
+      
+      <!-- No Results Message -->
+      <div id="no-results" class="hidden text-center py-20 text-gray-500">
+          <p class="text-2xl mb-2">No products found.</p>
+          <p>Try adjusting your search or filter.</p>
+      </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-12 mt-12 border-t border-gray-800">
+      <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+              <h4 class="text-white text-xl font-bold mb-4">City Center</h4>
+              <p class="text-sm text-gray-400">Your one-stop destination for premium lifestyle products at unbeatable prices.</p>
+          </div>
+          <div>
+              <h4 class="text-white font-bold mb-4">Shop</h4>
+              <ul class="space-y-2 text-sm text-gray-400">
+                  <li><button onclick="filterByCategory('Electronics'); scrollToShop()" class="hover:text-blue-400">Electronics</button></li>
+                  <li><button onclick="filterByCategory('Fashion'); scrollToShop()" class="hover:text-blue-400">Fashion</button></li>
+                  <li><button onclick="filterByCategory('Home'); scrollToShop()" class="hover:text-blue-400">Home</button></li>
+              </ul>
+          </div>
+          <div>
+              <h4 class="text-white font-bold mb-4">Support</h4>
+              <ul class="space-y-2 text-sm text-gray-400">
+                  <li class="hover:text-blue-400 cursor-pointer">Contact Us</li>
+                  <li class="hover:text-blue-400 cursor-pointer">FAQs</li>
+                  <li class="hover:text-blue-400 cursor-pointer">Shipping Policy</li>
+              </ul>
+          </div>
+          <div>
+              <h4 class="text-white font-bold mb-4">Connect</h4>
+              <div class="flex space-x-4">
+                  <i data-lucide="facebook" class="hover:text-blue-500 cursor-pointer w-6 h-6"></i>
+                  <i data-lucide="twitter" class="hover:text-blue-400 cursor-pointer w-6 h-6"></i>
+                  <i data-lucide="instagram" class="hover:text-pink-500 cursor-pointer w-6 h-6"></i>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="fixed inset-0 z-50 hidden">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" id="cart-backdrop"></div>
+      
+      <!-- Sidebar -->
+      <div class="absolute right-0 top-0 h-full w-full max-w-md bg-gray-900 shadow-2xl flex flex-col transform transition-transform animate-slide-in-right">
+          <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-gray-900">
+              <h2 class="text-xl font-bold text-white flex items-center">
+                  Your Cart
+                  <span id="cart-count-header" class="ml-2 bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded-full">0 items</span>
+              </h2>
+              <button id="close-cart-btn" class="p-2 hover:bg-gray-800 rounded-full transition-colors">
+                  <i data-lucide="x" class="text-gray-500 w-6 h-6"></i>
+              </button>
+          </div>
+
+          <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar">
+              <!-- Cart items injected here -->
+          </div>
+
+          <!-- Empty Cart State (Hidden by default) -->
+          <div id="empty-cart-msg" class="hidden flex-col items-center justify-center h-full text-center text-gray-500">
+              <i data-lucide="shopping-cart" class="mb-4 text-gray-600 w-16 h-16"></i>
+              <p class="text-lg font-medium text-gray-300">Your cart is empty</p>
+              <p class="text-sm mb-6">Looks like you haven't added anything yet.</p>
+              <button onclick="closeCart(); scrollToShop();" class="text-blue-400 font-bold hover:underline">
+                  Start Shopping
+              </button>
+          </div>
+
+          <!-- Cart Footer -->
+          <div id="cart-footer" class="p-6 bg-gray-900 border-t border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.2)]">
+              <div class="space-y-3 mb-6">
+                  <div class="flex justify-between text-gray-400">
+                      <span>Subtotal</span>
+                      <span id="cart-subtotal">$0.00</span>
+                  </div>
+                  <div class="flex justify-between text-gray-400">
+                      <span>Tax (5%)</span>
+                      <span id="cart-tax">$0.00</span>
+                  </div>
+                  <div class="flex justify-between text-xl font-extrabold text-white border-t border-gray-800 pt-3">
+                      <span>Total</span>
+                      <span id="cart-total">$0.00</span>
+                  </div>
+              </div>
+              <button onclick="checkout()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 active:scale-95 transition-all shadow-lg shadow-blue-200">
+                  Checkout
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- App JS -->
+  <script src="script.js" defer></script>
+</body>
+</html>
